@@ -2,3 +2,7 @@ forge-std/=lib/forge-std/src/
 solady/=lib/solady/src/
 openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/
 openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/
+@sphinx-labs/plugins/=node_modules/@sphinx-labs/plugins/contracts/foundry/
+@sphinx-labs/contracts/=node_modules/@sphinx-labs/contracts/
+sphinx-forge-std/=node_modules/@sphinx-labs/plugins/node_modules/sphinx-forge-std/src/
+sphinx-solmate/=node_modules/sphinx-solmate/src/
