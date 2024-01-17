@@ -2,6 +2,7 @@
 pragma solidity 0.8.19;
 
 import {Script} from "forge-std/Script.sol";
+import {SphinxConfig} from "./SphinxConfig.sol";
 import {Quest} from "../contracts/Quest.sol";
 import {Quest1155} from "../contracts/Quest1155.sol";
 import {QuestFactory} from "../contracts/QuestFactory.sol";
@@ -11,21 +12,16 @@ import {ProxyAdmin, ITransparentUpgradeableProxy} from "openzeppelin-contracts/p
 // # To Upgrade QuestFactory.sol run this command below
 // ! important: make sure storage layouts are compatible first:
 // bun clean && forge clean && forge build && npx @openzeppelin/upgrades-core validate --contract QuestFactory
-// forge script script/QuestFactory.s.sol:QuestFactoryUpgrade --rpc-url sepolia --broadcast --verify -vvvv
-contract QuestFactoryUpgrade is Script {
-    function run() external {
-        uint256 deployerPrivateKey = vm.envUint("MAINNET_PRIVATE_KEY");
+// bun sphinx propose script/QuestFactory.s.sol --target-contract QuestFactoryUpgrade --networks testnets
+contract QuestFactoryUpgrade is Script, SphinxConfig {
+    function run() external sphinx {
         ITransparentUpgradeableProxy questfactoryProxy = ITransparentUpgradeableProxy(C.QUEST_FACTORY_ADDRESS);
 
-        vm.startBroadcast(deployerPrivateKey);
-
-        ProxyAdmin(C.PROXY_ADMIN_ADDRESS).upgrade(questfactoryProxy, address(new QuestFactory()));
-
-        vm.stopBroadcast();
+        questfactoryProxy.upgradeTo(address(new QuestFactory{ salt: bytes32(0) }()));
     }
 }
 
-contract QuestFactoryDeploy is Script {
+contract QuestFactoryDeploy is Script, SphinxConfig {
     function run() external {
         uint256 deployerPrivateKey = vm.envUint("MAINNET_PRIVATE_KEY");
         address owner = vm.addr(deployerPrivateKey);
@@ -59,6 +55,9 @@ contract QuestFactoryDeploy is Script {
             5000,                               // referralFee_,
             75000000000000                      // mintFee_
         );
+
+        // Transfer ownership of the proxy from the ProxyAdmin to the Gnosis Safe
+        ProxyAdmin(C.PROXY_ADMIN_ADDRESS).changeProxyAdmin(questfactoryProxy, safeAddress());
 
         vm.stopBroadcast();
     }

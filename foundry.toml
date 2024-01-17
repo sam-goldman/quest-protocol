@@ -10,7 +10,7 @@ optimizer_runs = 1_000
 build_info = true
 extra_output = ["storageLayout"]
 libs = ["node_modules", "lib"]
-fs_permissions = [{ access = "read", path = "./"}]
+fs_permissions = [{ access = "read", path = "./"}, {access="read-write", path="./cache"}]
 gas_reports = ["Quest", "Quest1155", "QuestFactory"]
 
 [fmt]
@@ -26,6 +26,7 @@ polygon = "https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_POLYGON_API_KEY}"
 arbitrum = "https://arb-mainnet.g.alchemy.com/v2/${ALCHEMY_ARBITRUM_API_KEY}"
 arbitrum_official = "https://arb1.arbitrum.io/rpc"
 optimism = "https://opt-mainnet.g.alchemy.com/v2/${ALCHEMY_MAINNET_API_KEY}"
+arbitrum_sepolia = "https://arb-sepolia.g.alchemy.com/v2/${ALCHEMY_MAINNET_API_KEY}"
 base = "https://radial-alien-bush.base-mainnet.quiknode.pro/${QUICKNODE_BASE_API_KEY}/"
 mantle = "https://rpc.mantle.xyz/"
 scroll = "https://rpc.scroll.io/"
@@ -36,4 +37,5 @@ sepolia = { key = "${MAIN_ETHERSCAN_API_KEY}" }
 polygon = { key = "${POLYGONSCAN_API_KEY}" }
 arbitrum = { key = "${ARBISCAN_API_KEY}" }
 optimism = { key = "${OPT_ETHERSCAN_API_KEY}" }
+arbitrum_sepolia = { key = "${ARBISCAN_API_KEY}", url = "https://api-sepolia.arbiscan.io/api?" }
 base = { key = "${BASESCAN_API_KEY}" }
